@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz — Educazione Civica</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .quiz-box {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .quiz-progress { display: flex; align-items: center; margin-bottom: 1.5rem; gap: 1rem; }
+    .quiz-progress .bar { flex: 1; height: 6px; background: var(--gray-300); border-radius: 3px; overflow: hidden; }
+    .quiz-progress .bar-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width .3s; }
+    .quiz-progress span { font-size: .85rem; font-weight: 600; color: var(--gray-500); white-space: nowrap; }
+    .quiz-question { font-size: 1.15rem; font-weight: 700; color: var(--gray-900); margin-bottom: 1.3rem; }
+    .quiz-options { display: flex; flex-direction: column; gap: .7rem; }
+    .quiz-option {
+      padding: .9rem 1.3rem; border: 2px solid var(--gray-300); border-radius: 10px;
+      background: var(--white); cursor: pointer; font-size: .98rem; color: var(--gray-700);
+      transition: all .2s; text-align: left;
+    }
+    .quiz-option:hover { border-color: var(--accent); background: var(--accent-light); }
+    .quiz-option.selected { border-color: var(--accent); background: var(--accent-light); }
+    .quiz-option.correct { border-color: var(--green); background: var(--accent-light); }
+    .quiz-option.wrong { border-color: var(--red); background: var(--red-light); }
+    .quiz-btn {
+      background: var(--accent); color: var(--white); border: none;
+      padding: .7rem 1.8rem; border-radius: 10px; font-size: 1rem; font-weight: 600;
+      cursor: pointer; margin-top: 1.3rem; transition: background .2s;
+    }
+    .quiz-btn:hover { background: #007038; }
+    .quiz-btn:disabled { background: var(--gray-300); cursor: default; }
+    .quiz-result { text-align: center; padding: 1.5rem; }
+    .quiz-result .score { font-size: 2.8rem; font-weight: 700; color: var(--accent); }
+    .quiz-result .score-label { font-size: 1rem; color: var(--gray-500); margin-bottom: 1.3rem; }
+    #quiz-feedback { margin-top: 1rem; font-size: .92rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav class="nav-bar">
+    <a href="index.html" class="nav-brand">
+      <span class="flag-bar"></span>
+      Educazione Civica
+    </a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">☰</button>
+    <div class="nav-links">
+      <a href="index.html">Costituzione</a>
+      <a href="oliva-denaro.html">Oliva Denaro</a>
+      <a href="diritti-parita.html">Diritti &amp; Parità</a>
+      <a href="quiz-qr.html">Quiz</a>
+      <a href="sitografia.html">Sitografia</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <span class="badge">Quiz interattivo</span>
+    <h1>Mettiti alla prova</h1>
+    <p>10 domande su Costituzione, Oliva Denaro e diritti. Scegli la risposta giusta.</p>
+  </div>
+</section>
+
+<main>
+  <div class="content">
+    <div class="quiz-box" id="quiz-container"></div>
+  </div>
+</main>
+
+<script>
+const questions = [
+  {
+    q: "Cosa stabilisce l'articolo 2 della Costituzione?",
+    options: [
+      "La Repubblica riconosce i diritti inviolabili dell'uomo",
+      "Tutti i cittadini sono eguali davanti alla legge",
+      "Il matrimonio è fondato sull'uguaglianza dei coniugi",
+      "La Repubblica protegge la maternità e l'infanzia"
+    ],
+    answer: 0
+  },
+  {
+    q: "Cosa dice l'articolo 3 sull'uguaglianza?",
+    options: [
+      "Solo gli uomini sono uguali davanti alla legge",
+      "Tutti i cittadini sono uguali davanti alla legge, senza distinzione di sesso, razza o religione",
+      "L'uguaglianza vale solo per chi lavora",
+      "L'uguaglianza è solo formale, non sostanziale"
+    ],
+    answer: 1
+  },
+  {
+    q: "Cosa stabilisce l'articolo 29 sul matrimonio?",
+    options: [
+      "Il marito è il capofamiglia",
+      "Il matrimonio è ordinato sull'uguaglianza morale e giuridica dei coniugi",
+      "Solo la Chiesa può celebrare matrimoni",
+      "Il matrimonio è vietato alle coppie dello stesso sesso"
+    ],
+    answer: 1
+  },
+  {
+    q: "Cosa fa l'articolo 31 per le famiglie?",
+    options: [
+      "Le agevola con misure economiche e protegge maternità, infanzia e gioventù",
+      "Impone un limite al numero di figli",
+      "Regola solo il divorzio",
+      "Aiuta solo le famiglie numerose"
+    ],
+    answer: 0
+  },
+  {
+    q: "Come cambia Oliva dopo lo stupro?",
+    options: [
+      "Accetta il matrimonio riparatore",
+      "Diventa consapevole e determinata, rifiuta il matrimonio riparatore",
+      "Si trasferisce in un'altra città",
+      "Smette di studiare"
+    ],
+    answer: 1
+  },
+  {
+    q: "Come si comporta il padre (Salvo) di Oliva?",
+    options: [
+      "Costringe la figlia al matrimonio riparatore",
+      "Non si interessa alla vicenda",
+      "Asseconda la figlia e la sostiene in silenzio",
+      "Denuncia Paternò alla polizia"
+    ],
+    answer: 2
+  },
+  {
+    q: "Perché la madre Amalia pensa prima alla reputazione che al dolore della figlia?",
+    options: [
+      "Perché è una donna cattiva",
+      "Perché non vuole bene a Oliva",
+      "Perché è prigioniera del sistema patriarcale e il conformismo per lei è sopravvivenza",
+      "Perché vuole soldi da Paternò"
+    ],
+    answer: 2
+  },
+  {
+    q: "Come viene descritto Pino Paternò nel romanzo?",
+    options: [
+      "Come un mostro crudele senza scrupoli",
+      "Come un uomo senza personalità, plasmato dalla società",
+      "Come un ragazzo innamorato di Oliva",
+      "Come una vittima del sistema"
+    ],
+    answer: 1
+  },
+  {
+    q: "In che anno viene abrogato il matrimonio riparatore?",
+    options: ["1948", "1975", "1981", "1996"],
+    answer: 2
+  },
+  {
+    q: "In che anno lo stupro diventa reato contro la persona (e non più contro la morale)?",
+    options: ["1975", "1981", "1996", "2016"],
+    answer: 2
+  }
+];
+
+let currentQ = 0, score = 0, selected = -1, answered = false;
+const container = document.getElementById('quiz-container');
+
+function render() {
+  if (currentQ >= questions.length) { renderResult(); return; }
+  const q = questions[currentQ];
+  const progress = (currentQ / questions.length) * 100;
+  answered = false; selected = -1;
+  container.innerHTML = `
+    <div class="quiz-progress">
+      <span>Domanda ${currentQ + 1} di ${questions.length}</span>
+      <div class="bar"><div class="bar-fill" style="width:${progress}%"></div></div>
+    </div>
+    <div class="quiz-question">${q.q}</div>
+    <div class="quiz-options">
+      ${q.options.map((o, i) => `<button class="quiz-option" onclick="sel(${i})">${o}</button>`).join('')}
+    </div>
+    <button class="quiz-btn" id="next" disabled onclick="next()">Conferma</button>
+    <div id="fb"></div>`;
+}
+
+function sel(i) {
+  if (answered) return;
+  selected = i;
+  document.querySelectorAll('.quiz-option').forEach((el, idx) => el.classList.toggle('selected', idx === i));
+  document.getElementById('next').disabled = false;
+}
+
+function next() {
+  if (selected === -1 || answered) return;
+  answered = true;
+  const q = questions[currentQ];
+  const opts = document.querySelectorAll('.quiz-option');
+  const fb = document.getElementById('fb');
+  const btn = document.getElementById('next');
+  opts.forEach((el, i) => {
+    el.classList.remove('selected');
+    if (i === q.answer) el.classList.add('correct');
+    if (i === selected && i !== q.answer) el.classList.add('wrong');
+  });
+  if (selected === q.answer) { score++; fb.innerHTML = '✓ Corretta!'; fb.style.color = 'var(--green)'; }
+  else { fb.innerHTML = '✗ Sbagliata. La risposta giusta è in verde.'; fb.style.color = 'var(--red)'; }
+  if (currentQ + 1 < questions.length) { btn.textContent = 'Avanti'; btn.onclick = () => { currentQ++; render(); }; }
+  else { btn.textContent = 'Risultato'; btn.onclick = () => { currentQ++; render(); }; }
+}
+
+function renderResult() {
+  const pct = Math.round((score / questions.length) * 100);
+  let msg = pct >= 80 ? 'Ottimo! Conosci benissimo gli argomenti.' :
+            pct >= 60 ? 'Bravo, ma ripassa quello che hai sbagliato.' :
+            'Rileggi le pagine del sito e riprova.';
+  container.innerHTML = `
+    <div class="quiz-result">
+      <div class="score">${score}/10</div>
+      <div class="score-label">${pct}% — ${msg}</div>
+      <button class="quiz-btn" onclick="currentQ=0;score=0;render();">Rifai il quiz</button>
+      <p style="margin-top:1.2rem;"><a href="index.html" style="color:var(--accent);text-decoration:none;font-weight:600;">← Torna al sito</a></p>
+    </div>`;
+}
+
+render();
+</script>
+</body>
+</html>

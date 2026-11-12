@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz QR — Educazione Civica</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .qr-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      padding: 3rem 2rem;
+      text-align: center;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+    .qr-card h2 { color: var(--gray-900); margin-bottom: .5rem; font-size: 1.3rem; }
+    .qr-card .qr-sub { color: var(--gray-500); font-size: .95rem; margin-bottom: 1.8rem; }
+    .qr-img {
+      width: 260px; height: 260px;
+      margin: 0 auto 1.5rem;
+      display: block;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-300);
+    }
+    .qr-card .qr-url {
+      font-size: .82rem;
+      color: var(--gray-500);
+      word-break: break-all;
+      margin-bottom: 1.5rem;
+      padding: .6rem;
+      background: var(--gray-50);
+      border-radius: 8px;
+    }
+    .qr-card .qr-btn {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--white);
+      padding: .7rem 1.8rem;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: .98rem;
+    }
+    .qr-card .qr-btn:hover { background: #007038; }
+    .qr-instructions {
+      text-align: left;
+      margin-top: 1.5rem;
+      font-size: .9rem;
+      color: var(--gray-500);
+    }
+    .qr-instructions li { margin-bottom: .4rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav class="nav-bar">
+    <a href="index.html" class="nav-brand">
+      <span class="flag-bar"></span>
+      Educazione Civica
+    </a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">☰</button>
+    <div class="nav-links">
+      <a href="index.html">Costituzione</a>
+      <a href="oliva-denaro.html">Oliva Denaro</a>
+      <a href="diritti-parita.html">Diritti &amp; Parità</a>
+      <a href="quiz-qr.html" class="active">Quiz</a>
+      <a href="sitografia.html">Sitografia</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <span class="badge">Pagina 4 di 5</span>
+    <h1>Quiz: scansiona il QR code</h1>
+    <p>Scansiona il codice con il telefono per fare il quiz sul tuo cellulare. 10 domande a risposta multipla.</p>
+  </div>
+</section>
+
+<main>
+  <div class="content">
+    <div class="qr-card">
+      <h2>Quiz Educazione Civica</h2>
+      <p class="qr-sub">Apri la fotocamera del telefono e inquadra il codice</p>
+      <img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=10&data=https://files.catbox.moe/x2hr3a.html" alt="QR code del quiz">
+      <div class="qr-url">https://files.catbox.moe/x2hr3a.html</div>
+      <a href="quiz.html" class="qr-btn">Apri il quiz sul computer</a>
+      <ul class="qr-instructions">
+        <li>Apri l'app Fotocamera o un lettore di QR code</li>
+        <li>Inquadra il codice qui sopra</li>
+        <li>Tocca il link che appare sullo schermo</li>
+        <li>Rispondi alle 10 domande e vedi il risultato</li>
+      </ul>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>
